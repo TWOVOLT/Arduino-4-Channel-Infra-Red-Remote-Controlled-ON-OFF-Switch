@@ -1,0 +1,113 @@
+/*
+ * 4 Channel Arduino Infra Red Remote Controller with Relay
+ * Circuit diagram, PCB Layout and Arduino Code available on our website www.twovolt.com
+ * 4 CHANNEL AMCO REMOTE SWITCH SWITCH 1, 2, 3,4
+ * Code Author Ken Shirriff
+
+ */
+
+#include <IRremote.h>
+
+int RECV_PIN = 6;
+String IRButton1 = "FD20DF";//SWITCH 1
+String IRButton2 = "FDA05F";//SWITCH 2
+String IRButton3 = "FD609F";//SWITCH 3
+String IRButton4 = "FD10EF";//SWITCH 4
+const int ledPin1 = 2;// Relay 1
+const int ledPin2 = 3;// Relay 2
+const int ledPin3 = 4;// Relay 3
+const int ledPin4 = 5;// Relay 4
+
+IRrecv irrecv(RECV_PIN);
+
+decode_results results;
+String BUTTONPRESSED;
+int button1 = 0;
+int button2 = 0;
+int button3 = 0;
+int button4 = 0;
+
+void setup()
+{
+  Serial.begin(9600);
+  irrecv.enableIRIn(); // Start the receiver
+  pinMode(ledPin1, OUTPUT);
+  pinMode(ledPin2, OUTPUT);
+  pinMode(ledPin3, OUTPUT);
+  pinMode(ledPin4, OUTPUT);
+}
+
+void loop() {
+  if (irrecv.decode(&results)) {
+    Serial.println(results.value, HEX);
+    BUTTONPRESSED = String(results.value, HEX);
+    BUTTONPRESSED.toUpperCase();
+    Serial.print("BUTTONPRESSED ");
+    Serial.println(BUTTONPRESSED);
+    //delay(1000);
+
+    //button 1
+    if (BUTTONPRESSED == IRButton1) {
+      if (button1 == 0) {
+        button1 = 1;
+      }
+      else
+        button1 = 0;
+      if (button1 == 1) {
+        digitalWrite(ledPin1, HIGH);
+    
+
+
+
+      }
+      else
+        digitalWrite(ledPin1, LOW);
+    }
+
+    //button 2
+    if (BUTTONPRESSED == IRButton2) {
+      if (button2 == 0) {
+        button2 = 1;
+      }
+      else
+        button2 = 0;
+      if (button2 == 1) {
+        digitalWrite(ledPin2, HIGH);
+      
+      }
+      else
+        digitalWrite(ledPin2, LOW);
+    }
+
+    //button 3
+    if (BUTTONPRESSED == IRButton3) {
+      if (button3 == 0) {
+        button3 = 1;
+      }
+      else
+        button3 = 0;
+      if (button3 == 1) {
+        digitalWrite(ledPin3, HIGH);
+            }
+      else
+        digitalWrite(ledPin3, LOW);
+    }
+
+    //button 4
+    if (BUTTONPRESSED == IRButton4) {
+      if (button4 == 0) {
+        button4 = 1;
+      }
+      else
+        button4 = 0;
+      if (button4 == 1) {
+        digitalWrite(ledPin4, HIGH);
+             }
+      else
+        digitalWrite(ledPin4, LOW);
+    }
+
+    irrecv.resume(); // Receive the next value
+  }
+
+}\
